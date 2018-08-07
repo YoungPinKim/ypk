@@ -9,13 +9,12 @@
     <p>We have selected a random number between 1 and 100. See if you can
       guess it in 10 turns or less. We'll tell you if your guess was too high or
       too low.</p>
+    <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
+    <input type="submit" value="Submit guess" class="guessSubmit">
+    <p class="guesses"></p>
+    <p class="lastResult"></p>
+    <p class="lowOrHi"></p>
 
-      <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
-      <input type="submit" value="Submit guess" class="guessSubmit">
-
-      <p class="guesses"></p>
-      <p class="lastResult"></p>
-      <p class="lowOrHi"></p>
     <script>
       var randomNumber = Math.floor(Math.random()*100)+1;
 
@@ -23,12 +22,12 @@
       var lastResult = document.querySelector('.lastResult');
       var lowOrHi = document.querySelector('.lowOrHi');
 
-      var gessSubmit = document.querySelector('.guessSubmit');
+      var guessSubmit = document.querySelector('.guessSubmit');
       var guessField = document.querySelector('.guessField');
 
       var guessCount = 1;
       var resetButton;
-
+      guessField.focus();
       function checkGuess()
       {
         var userGuess = Number(guessField.value);
@@ -36,11 +35,12 @@
         {
           guesses.textContent = 'Previous guesses : ';
         }
-        guess.textContent += userGuess + ' ';
+        guesses.textContent += userGuess + ' ';
 
         if(userGuess === randomNumber)
         {
-          lastResult.textContent = 'Congratulations! you got it right'
+          lastResult.textContent = 'Congratulations! you got it right';
+          lastResult.style.backgroundColor = 'green';
           lowOrHi.textContent = '';
           setGameOver();
         }
@@ -52,6 +52,7 @@
         else
         {
           lastResult.textContent = 'Wrong';
+          lastResult.style.backgroundColor = 'red';
           if(userGuess < randomNumber)
           {
             lowOrHi.textContent = 'Low'
@@ -62,8 +63,8 @@
           }
         }
 
-        guessCount ++;
-        guessField = '';
+        guessCount++;
+        guessField.value = '';
         guessField.focus();
       }
       function setGameOver()
@@ -74,7 +75,7 @@
         document.body.appendChild(resetButton);
         resetButton.addEventListener('click',resetGame);
       }
-
+      guessSubmit.addEventListener('click', checkGuess);
       function resetGame()
       {
         guessCount = 1;
